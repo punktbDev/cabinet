@@ -26,17 +26,20 @@ form.addEventListener('submit', (event) => {
     const formLogin = formData.get("login").trim()
     const formPassword = formData.get("password").trim()
 
+    let URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
+
     let basicAuth
     try {
         basicAuth = "Basic " + btoa(formLogin + ":" + formPassword)
     } catch (error) {
         formError()
-        $("#message-1").text("Ошибка до отправки")
-        if (typeof error === "object") {
-            $("#message-2").text(JSON.stringify(error))
-        } else {
-            $("#message-2").text(error)
+
+        if (URLParams.dev !== undefined) {
+            $(".dev-error").remove()
+            $("section form").append(`<p class="dev-error">Ошибка до отправки</p>`)
+            $("section form").append(`<p class="dev-error">${typeof error === "object" ? JSON.stringify(error) : error}</p>`)
         }
+        
         return
     }
 
@@ -62,13 +65,12 @@ form.addEventListener('submit', (event) => {
             }
         },
         error: (error) => {
-            console.log(error);
-            $("#message-1").text("Ошибка после отправки")
-            if (typeof error === "object") {
-                $("#message-2").text(JSON.stringify(error))
-            } else {
-                $("#message-2").text(error)
+            if (URLParams.dev !== undefined) {
+                $(".dev-error").remove()
+                $("section form").append(`<p class="dev-error">Ошибка после отправки</p>`)
+                $("section form").append(`<p class="dev-error">${typeof error === "object" ? JSON.stringify(error) : error}</p>`)
             }
+            
             formError()
         }
     })
