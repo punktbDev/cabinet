@@ -29,8 +29,10 @@ form.addEventListener('submit', (event) => {
     let basicAuth
     try {
         basicAuth = "Basic " + btoa(formLogin + ":" + formPassword)
-    } catch {
+    } catch (error) {
         formError()
+        $("#message-1").text("Ошибка до отправки")
+        $("#message-2").text(error)
         return
     }
 
@@ -57,6 +59,8 @@ form.addEventListener('submit', (event) => {
         },
         error: (error) => {
             console.log(error);
+            $("#message-1").text("Ошибка после отправки")
+            $("#message-2").text(error)
             formError()
         }
     })
