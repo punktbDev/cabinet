@@ -35,7 +35,7 @@ if (URLParams["id"] !== undefined) {
     }
 
     DBgetUserData(clientId[0], (data) => {
-        results = data.results.reverse()
+        let results = data.results.reverse()
 
         // Если есть второй id - рендер конкретного результата клиента
         if (clientId[1] !== undefined) {

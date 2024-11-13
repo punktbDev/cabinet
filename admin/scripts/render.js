@@ -144,23 +144,23 @@ passwordForm.addEventListener('submit', (event) => {
 
 // Все диагностики (Для отображения в карточках)
 let diagnostics = [
-    {id: 0, title: "43 Профессии", link: "https://punkt-b.pro/43-professions?manager-id="},
-    {id: 1, title: "10 Любимых дел (Детский)", link: "https://punkt-b.pro/10-favorite-things-kid?manager-id="},
-    {id: 2, title: "10 Любимых дел (Взрослый)", link: "https://punkt-b.pro/10-favorite-things?manager-id="},
-    {id: 3, title: "Идеальная работа (Детский)", link: "https://punkt-b.pro/perfect-job-kid?manager-id="},
-    {id: 4, title: "Идеальная работа (Взрослый)", link: "https://punkt-b.pro/perfect-job?manager-id="},
-    {id: 5, title: "Мои потребности (Детский)", link: "https://punkt-b.pro/my-needs-kid?manager-id="},
-    {id: 6, title: "Мои потребности (Взрослый)", link: "https://punkt-b.pro/my-needs?manager-id="},
-    {id: 7, title: "Антирейтинг профессий (Детский)", link: "https://punkt-b.pro/antirating-of-professions-kid?manager-id="},
-    {id: 8, title: "Антирейтинг профессий (Взрослый)", link: "https://punkt-b.pro/antirating-of-professions?manager-id="},
-    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.) (Ютуб)", link: "https://punkt-b.pro/interview-kid?manager-id="},
-    {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: "https://punkt-b.pro/interview-kid?vk&manager-id="},
-    {id: 10, title: "Интервью (Для всех возрастов) (Ютуб)", link: "https://punkt-b.pro/interview?manager-id="},
-    {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: "https://punkt-b.pro/interview?vk&manager-id="},
-    {id: 11, title: "8 Кадров (Детский)", link: "https://punkt-b.pro/8-frames-kid?manager-id="},
-    {id: 12, title: "8 Кадров (Взрослый)", link: "https://punkt-b.pro/8-frames?manager-id="},
-    {id: 13, title: "Исследование ценностей", link: "https://punkt-b.pro/exploring-values?manager-id="},
-    {id: 14, title: "Учебная мотивация", link: "https://punkt-b.pro/learning-motivation?manager-id="}
+    {id: 0, title: "43 Профессии", link: DIAGNOSTICS_URL + "/43-professions.html?manager-id="},
+    {id: 1, title: "10 Любимых дел (Детский)", link: DIAGNOSTICS_URL + "/10-favorite-things-kid.html?manager-id="},
+    {id: 2, title: "10 Любимых дел (Взрослый)", link: DIAGNOSTICS_URL + "/10-favorite-things.html?manager-id="},
+    {id: 3, title: "Идеальная работа (Детский)", link: DIAGNOSTICS_URL + "/perfect-job-kid.html?manager-id="},
+    {id: 4, title: "Идеальная работа (Взрослый)", link: DIAGNOSTICS_URL + "/perfect-job.html?manager-id="},
+    {id: 5, title: "Мои потребности (Детский)", link: DIAGNOSTICS_URL + "/my-needs-kid.html?manager-id="},
+    {id: 6, title: "Мои потребности (Взрослый)", link: DIAGNOSTICS_URL + "/my-needs.html?manager-id="},
+    {id: 7, title: "Антирейтинг профессий (Детский)", link: DIAGNOSTICS_URL + "/antirating-of-professions-kid.html?manager-id="},
+    {id: 8, title: "Антирейтинг профессий (Взрослый)", link: DIAGNOSTICS_URL + "/antirating-of-professions.html?manager-id="},
+    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.) (Ютуб)", link: DIAGNOSTICS_URL + "/interview-kid.html?manager-id="},
+    {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview-kid.html?vk&manager-id="},
+    {id: 10, title: "Интервью (Для всех возрастов) (Ютуб)", link: DIAGNOSTICS_URL + "/interview.html?manager-id="},
+    {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview.html?vk&manager-id="},
+    {id: 11, title: "8 Кадров (Детский)", link: DIAGNOSTICS_URL + "/8-frames-kid.html?manager-id="},
+    {id: 12, title: "8 Кадров (Взрослый)", link: DIAGNOSTICS_URL + "/8-frames.html?manager-id="},
+    {id: 13, title: "Исследование ценностей", link: DIAGNOSTICS_URL + "/exploring-values.html?manager-id="},
+    {id: 14, title: "Учебная мотивация", link: DIAGNOSTICS_URL + "/learning-motivation.html?manager-id="}
 ]
 
 function renderDiagnostics() {

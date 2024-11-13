@@ -1,6 +1,20 @@
+function formError() {
+    inputError("#login-input")
+    inputError("#password-input")
+
+    // Ставим текст ошибки
+    $("#login-error").addClass("show")
+    setTimeout(() => {
+        $("#login-error").removeClass("show")
+    }, 2000)
+}
+
 // Ивент submit у формы входа
 const form = document.querySelector('form')
 form.addEventListener('submit', (event) => {
+    // Отключение базового перехода
+    event.preventDefault()
+    
     // Отключаем кнопку на 2 секунды
     $("#login-submit").attr("disabled", "disabled")
     setTimeout(() => {
@@ -12,12 +26,20 @@ form.addEventListener('submit', (event) => {
     const formLogin = formData.get("login").trim()
     const formPassword = formData.get("password").trim()
 
+    let basicAuth
+    try {
+        basicAuth = "Basic " + btoa(formLogin + ":" + formPassword)
+    } catch {
+        formError()
+        return
+    }
+
     // Функция авторизации
     $.ajax({
         url: API_URL + "/login",
         method: "GET",
         headers: {
-            "Authorization": "Basic " + btoa(formLogin + ":" + formPassword),
+            "Authorization": basicAuth,
         },
         success: (data) => {
             data.login = formLogin
@@ -34,19 +56,10 @@ form.addEventListener('submit', (event) => {
             }
         },
         error: (error) => {
-            inputError("#login-input")
-            inputError("#password-input")
-
-            // Ставим текст ошибки
-            $("#login-error").addClass("show")
-            setTimeout(() => {
-                $("#login-error").removeClass("show")
-            }, 2000)
+            console.log(error);
+            formError()
         }
     })
-
-    // Отключение базового перехода
-    event.preventDefault()
 })
 
 
