@@ -1,7 +1,7 @@
 // Получить актуальную информацию о профиле
 function DBgetUserData(func, func_error) {
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/manager",
+        url: API_URL + "/manager",
         method: "GET",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
@@ -14,7 +14,7 @@ function DBgetUserData(func, func_error) {
 // Обновить информацию о пользователе
 function DBchangeUserData(data, func, func_error) {
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/manager",
+        url: API_URL + "/manager",
         method: "PUT",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
@@ -28,7 +28,7 @@ function DBchangeUserData(data, func, func_error) {
 // Получить актуальную информацию о клиентах менеджера
 function DBgetClients(func) {
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/clients",
+        url: API_URL + "/clients",
         method: "GET",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
@@ -40,7 +40,7 @@ function DBgetClients(func) {
 // Установить клиента просмотренным
 function DBsetClientChecked(data, func) {
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/client/is-new",
+        url: API_URL + "/client/is-new",
         method: "POST",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
@@ -53,7 +53,7 @@ function DBsetClientChecked(data, func) {
 // Установить клиента в архив или обратно
 function DBsetClientArchive(data, func) {
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/client/is-archive",
+        url: API_URL + "/client/is-archive",
         method: "POST",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)

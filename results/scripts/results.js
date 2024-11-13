@@ -24,7 +24,7 @@ if (URLParams["id"] !== undefined) {
     // Получить данные о клиенте
     function DBgetUserData(id, func, func_error) {
         $.ajax({
-            url: "https://punctb-service.ru/api/v1/client/" + id,
+            url: API_URL + "/client/" + id,
             method: "GET",
             headers: {
                 "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)

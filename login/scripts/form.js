@@ -14,7 +14,7 @@ form.addEventListener('submit', (event) => {
 
     // Функция авторизации
     $.ajax({
-        url: "https://punctb-service.ru/api/v1/login",
+        url: API_URL + "/login",
         method: "GET",
         headers: {
             "Authorization": "Basic " + btoa(formLogin + ":" + formPassword),
