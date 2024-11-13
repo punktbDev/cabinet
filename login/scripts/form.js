@@ -32,7 +32,11 @@ form.addEventListener('submit', (event) => {
     } catch (error) {
         formError()
         $("#message-1").text("Ошибка до отправки")
-        $("#message-2").text(error)
+        if (typeof error === "object") {
+            $("#message-2").text(JSON.stringify(error))
+        } else {
+            $("#message-2").text(error)
+        }
         return
     }
 
@@ -60,7 +64,11 @@ form.addEventListener('submit', (event) => {
         error: (error) => {
             console.log(error);
             $("#message-1").text("Ошибка после отправки")
-            $("#message-2").text(error)
+            if (typeof error === "object") {
+                $("#message-2").text(JSON.stringify(error))
+            } else {
+                $("#message-2").text(error)
+            }
             formError()
         }
     })
