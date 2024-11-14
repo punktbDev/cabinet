@@ -51,6 +51,8 @@ form.addEventListener('submit', (event) => {
             "Authorization": basicAuth,
         },
         success: (data) => {
+        console.log("success");
+
             data.login = formLogin
             data.password = formPassword
 
@@ -65,6 +67,8 @@ form.addEventListener('submit', (event) => {
             }
         },
     })
+    console.log("После");
+    
 })
 
 
