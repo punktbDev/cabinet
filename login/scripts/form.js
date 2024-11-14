@@ -64,15 +64,6 @@ form.addEventListener('submit', (event) => {
                 location.href = "/"
             }
         },
-        error: (error) => {
-            if (URLParams.dev !== undefined) {
-                $(".dev-error").remove()
-                $("section form").append(`<p class="dev-error">Ошибка после отправки</p>`)
-                $("section form").append(`<p class="dev-error">${typeof error === "object" ? JSON.stringify(error) : error}</p>`)
-            }
-            
-            formError()
-        }
     })
 })
 
