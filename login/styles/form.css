@@ -150,3 +150,7 @@ form button[type="submit"]:disabled {
 #login-error.show {
     visibility: visible;
 }
+
+.dev-error {
+    overflow-wrap: break-word;
+}
