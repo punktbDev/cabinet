@@ -7,7 +7,7 @@
     align-items: center;
     gap: 22px;
 
-    margin: 32px 0 33px auto; /* К правому краю + оступы */
+    margin: 32px 0 33px auto; /* К правому краю + отступы */
 }
 
 
@@ -44,7 +44,7 @@
     text-align: center;
 }
 
-/* Центрированый текст внутрки заголовков во вкладке "Мой профиль"  */
+/* Центрированный текст внутри заголовков во вкладке "Мой профиль"  */
 #container-profile .form-title,
 #container-open-card .form-title,
 #container-managers .form-title {
@@ -164,7 +164,7 @@
     border-radius: 10px;        
 
     padding-left: 12px;
-    padding-right: 52px; /* Оступ от картинки (20px + 20px + 12px) */
+    padding-right: 52px; /* Отступ от картинки (20px + 20px + 12px) */
 }
 
 /* Кнопка просмотра пароля */
@@ -202,6 +202,12 @@
     justify-content: center;
 }
 
+.button-wrapper_column {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 button {
     width: 300px;
     height: 40px;
@@ -230,6 +236,14 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.change-password__error {
+    display: none;
+    width: 100%;
+    text-align: center;
+    color: red;
+    font-size: 16px;
+}
+
 
 /* Поиск */
 .search-wrapper {
@@ -247,7 +261,7 @@ button:disabled {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    padding-left: 48px; /* Оступ от картинки */
+    padding-left: 48px; /* Отступ от картинки */
     padding-right: 12px;
 
     outline: none;
@@ -302,7 +316,7 @@ button:disabled {
     background-color: #00000000;
 }
 
-/* Скрол цвета основного блока */
+/* Скролл цвета основного блока */
 #container-clients .content::-webkit-scrollbar-thumb,
 #container-archive .content::-webkit-scrollbar-thumb,
 #container-diagnostics .content::-webkit-scrollbar-thumb,

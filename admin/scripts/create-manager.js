@@ -46,7 +46,7 @@ newManagerForm.addEventListener('submit', (event) => {
 
     if (formPass.length < 8) {
         inputError("#manager-pass")
-        $(".new-manager__error").text(`Ошибка "Пароль меньше 8 символов"`)
+        $(".new-manager__error").text(`Ошибка: Пароль меньше 8 символов`)
         $(".new-manager__error").show()
         return
     }
@@ -54,20 +54,21 @@ newManagerForm.addEventListener('submit', (event) => {
     let reEmail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i
     if (!reEmail.test(formEmail)) {
         inputError("#manager-email")
-        $(".new-manager__error").text(`Ошибка "Неверный email"`)
+        $(".new-manager__error").text(`Ошибка: Неверный email`)
         $(".new-manager__error").show()
         return
     }
 
     try {
-        // Пробуем btoa
-        let testBtoa = btoa(formEmail + ":" + formPass)
+        // Тестируем на btoa
+        btoa(formEmail + ":" + formPass)
     } catch {
         // Если ошибка
         inputError("#manager-email")
         inputError("#manager-pass")
-        $(".new-manager__error").text(`Ошибка "Используйте только англ. буквы и цифры"`)
+        $(".new-manager__error").text(`Ошибка: Используйте только англ. буквы, цифры и спецсимволы`)
         $(".new-manager__error").show()
+        return
     }
 
     formName = formName.split(" ")
@@ -89,7 +90,7 @@ newManagerForm.addEventListener('submit', (event) => {
     }, (error) => {
         // Если в итоге email не уникальный
         inputError("#manager-email")
-        $(".new-manager__error").text(`Ошибка "Введенный email занят"`)
+        $(".new-manager__error").text(`Ошибка: Введенный email занят`)
         $(".new-manager__error").show()
     })
 })

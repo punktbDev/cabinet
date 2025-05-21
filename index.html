@@ -59,7 +59,7 @@
             </nav>
         </aside>
         <section>
-            <!-- Бурег навигации -->
+            <!-- Кнопка навигации -->
             <button id="nav-burger">
                 <img src="https://sun9-24.userapi.com/impg/pyBLBVZoxTbXm7uCYmaozA9PQvVUb4GayeB9EA/aOYuL2hWMaU.jpg?size=18x13&quality=96&sign=d09497b1dd17836f8a6b7689eacf91f5&type=album" alt="burger">
             </button>
@@ -131,8 +131,9 @@
                         <small>Мин. длина 8 символов</small>
                     </div>
 
-                    <div class="button-wrapper">
+                    <div class="button-wrapper button-wrapper_column">
                         <button class="p1" id="password-save" type="submit" disabled>Сохранить</button>
+                        <p class="change-password__error">Ошибка: Используйте только англ. буквы, цифры и спецсимволы</p>
                     </div>
                 </form>
             </div>
@@ -177,7 +178,7 @@
 
                 <div class="content">
                     <div class="input-block">
-                        <p>Телефон</p>
+                        <p id="open-card-phone-label">Телефон</p>
                         <input class="p1 input-open-card" id="open-card-phone" readonly>
                     </div>
                     

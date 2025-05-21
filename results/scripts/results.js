@@ -19,46 +19,57 @@ let diagnostics = {
 
 
 let URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
-if (URLParams["id"] !== undefined) {
-    let clientId = URLParams["id"].split("_")
-    // Получить данные о клиенте
-    function DBgetUserData(id, func, func_error) {
-        $.ajax({
-            url: API_URL + "/client/" + id,
-            method: "GET",
-            headers: {
-                "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
-            },
-            success: func,
-            error: func_error
-        })
-    }
-
-    DBgetUserData(clientId[0], (data) => {
-        let results = data.results.reverse()
-
-        // Если есть второй id - рендер конкретного результата клиента
-        if (clientId[1] !== undefined) {
-            let result = results[clientId[1]]
-            result["name"] = data.name
-            result["diagnostic-title"] = diagnostics[result["diagnostic-id"]]
-            renderResult(result)
-        } else {
-            for (let i in results) {
-                results[i]["name"] = data.name
-                results[i]["diagnostic-title"] = diagnostics[results[i]["diagnostic-id"]]
-            }
-            
-            results.forEach(element => {
-                renderResult(element)
-            })
-        }
-    }, (error) => {
-        $("section").append(`<div><h3>Невозможно отобразить результаты!</h3><h3>Возможно вы перешли по неправильной ссылке.</h3></div>`)
-    })
-} else {
+if (URLParams["id"] === undefined) {
     $("section").append(`<div><h3>Невозможно отобразить результаты!</h3><h3>Возможно вы перешли по неправильной ссылке.</h3></div>`)
 }
+
+const _URLParams = URLParams["id"].split("_")
+const clientId = _URLParams[0]
+const resultId = _URLParams[1]
+
+// Получить данные о клиенте
+function DBgetUserData(id, func, func_error) {
+    $.ajax({
+        url: API_URL + "/client/" + id,
+        method: "GET",
+        headers: {
+            "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
+        },
+        success: func,
+        error: func_error
+    })
+}
+
+DBgetUserData(clientId, (data) => {
+    let results = data.results.reverse()
+    console.log(results);
+    
+
+    // Если есть второй id - рендер конкретного результата клиента
+    if (resultId !== undefined) {
+        let result = 0
+        if (resultId.length < 5) { // Поиск по порядковому номеру если id диагностики 4 цифры
+            result = results[resultId] 
+        } else { // Поиск по дате прохождения
+            result = results.find(result => result.date == resultId)
+        }
+        
+        result["name"] = data.name
+        result["diagnostic-title"] = diagnostics[result["diagnostic-id"]]
+        renderResult(result)
+    } else {
+        for (let i in results) {
+            results[i]["name"] = data.name
+            results[i]["diagnostic-title"] = diagnostics[results[i]["diagnostic-id"]]
+        }
+        
+        results.forEach(element => {
+            renderResult(element)
+        })
+    }
+}, (error) => {
+    $("section").append(`<div><h3>Невозможно отобразить результаты!</h3><h3>Возможно вы перешли по неправильной ссылке.</h3></div>`)
+})
 
 function getData(timestamp) {
     let date = new Date(Number(timestamp))

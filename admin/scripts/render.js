@@ -91,6 +91,11 @@ profileForm.addEventListener('submit', (event) => {
 })
 
 
+// Убираем ошибку при обновлении любого инпута с паролем
+$("#password-new, #password-new-again").on("input", () => { // Удаление пробелов
+    $(".change-password__error").hide()
+})
+
 // Отправка формы пароля профиля
 const passwordForm = document.querySelector("#password-form")
 passwordForm.addEventListener('submit', (event) => {
@@ -113,13 +118,38 @@ passwordForm.addEventListener('submit', (event) => {
     // Если старый пароль не совпадает с текущим
     if (oldPass !== userData.password) {
         inputError("#password-old")
+        $(".change-password__error").text(`Ошибка: Пароль не совпадает с текущим`)
+        $(".change-password__error").show()
         return
     }
 
-    // Если новый пароль не совпадает с повтором или длина менее 8 символов
-    if (newPass !== newPassAgain || newPass.length < 8 || newPassAgain.length < 8) {
+    // Если новый пароль менее 8 символов
+    if (newPass.length < 8) {
+        inputError("#password-new")
+        $(".change-password__error").text(`Ошибка: Пароль меньше 8 символов`)
+        $(".change-password__error").show()
+        return
+    }
+
+    // Если новый пароль не совпадает с повтором
+    if (newPass !== newPassAgain) {
         inputError("#password-new")
         inputError("#password-new-again")
+        $(".change-password__error").text(`Ошибка: Подтверждение пароля не совпадает с новым паролем`)
+        $(".change-password__error").show()
+        return
+    }
+
+
+    try {
+        // Тестируем на btoa
+        btoa(newPass)
+    } catch {
+        // Если ошибка
+        inputError("#password-new")
+        inputError("#password-new-again")
+        $(".change-password__error").text(`Ошибка: Используйте только англ. буквы, цифры и спецсимволы`)
+        $(".change-password__error").show()
         return
     }
 
@@ -133,6 +163,7 @@ passwordForm.addEventListener('submit', (event) => {
 
         // Если ошибки нету, то сохраняем и обновляем страницу
         localStorage.setItem("userData", JSON.stringify(userData))
+        $("#password-form").trigger("reset")
     
     }, (error) => {
         // Если есть где то ошибка то помечаем поля
@@ -221,7 +252,7 @@ function renderDiagnostics() {
         }
     })
 
-    // Тригерим поиск после поиска даигностики загрузки
+    // Триггерим поиск после поиска диагностики загрузки
     $("#search-diagnostics").trigger("input")
 }
 
@@ -229,7 +260,7 @@ function renderDiagnostics() {
 renderDiagnostics()
 
 
-// Поиск по диганостикам срабатывает при обновления поля Поиска
+// Поиск по диагностикам срабатывает при обновления поля Поиска
 $("#search-diagnostics").on("input", () => {
     if ($("#search-diagnostics").val() === "") {
         $(".diagnostic").css("display", "flex")
@@ -403,7 +434,7 @@ function renderClients(data) {
     })
 
 
-    // Тригерим поиск после рендера
+    // Триггерим поиск после рендера
     $("#search-clients").trigger("input")
     $("#search-archive").trigger("input")
 }
@@ -415,7 +446,7 @@ let openedCardId = null
 function renderOpenCard(cardId) {
     openedCardId = cardId
 
-    // Находим  списке нужную карточку
+    // Находим в списке нужную карточку
     let card = clients.find(el => el.id === parseInt(cardId))
     let manager = managers.findIndex(el => el.id === card.manager_id) // Находим индекс менеджера карточки
 
@@ -424,7 +455,13 @@ function renderOpenCard(cardId) {
     $("#open-card-phone").val(card.phone)
     $("#open-card-email").val(card.email)
     $("#open-card-manager").val(managers[manager].name + " " + managers[manager].surname)
-    
+
+    // Меняем лейбл у инпута если телефон родителя
+    if (card["is-phone-adult"]) {
+        $("#open-card-phone-label").text("Телефон родителя")
+    } else {
+        $("#open-card-phone-label").text("Телефон")
+    }
 
     // Открываем карточку
     $(".container").addClass("hidden")
@@ -433,7 +470,7 @@ function renderOpenCard(cardId) {
     $(".results-container").html("") // Очищаем контент перед рендером
     let results = [...card.results] // Копирование массива
     for (i in results.reverse()) { // С конца
-        // Получаем название пройденой дигностики
+        // Получаем название пройденной диагностики
         let diagnostic = diagnostics.find(el => el.id === results[i]["diagnostic-id"])
 
         let date = new Date(Number(results[i].date))
@@ -472,7 +509,7 @@ function renderOpenCard(cardId) {
                     <input class="p1 input-open-card" readonly value="${resultDate}">
                 </div>
                 <div class="input-block">
-                    <button class="p1 open-result" id="card-${card.id}-result-${i}">Узнать результаты</button>
+                    <button class="p1 open-result" id="card-${card.id}-result-${results[i].date}">Узнать результаты</button>
                 </div>
             </div>
         `);
@@ -647,7 +684,7 @@ function renderManagers() {
     })
 }
 
-// Обвернул в функцию что бы зарендерить позже в добавлении менеджера
+// Обвернул в функцию что бы рендерить позже в добавлении менеджера
 renderManagers()
 
 $("#container-managers .content").on("click tap", ".block-manager", (event) => {
