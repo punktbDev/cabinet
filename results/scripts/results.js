@@ -17,15 +17,9 @@ let diagnostics = {
     14: 'Учебная мотивация',
 }
 
-
-let URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
-if (URLParams["id"] === undefined) {
+function renderError() {
     $("section").append(`<div><h3>Невозможно отобразить результаты!</h3><h3>Возможно вы перешли по неправильной ссылке.</h3></div>`)
 }
-
-const _URLParams = URLParams["id"].split("_")
-const clientId = _URLParams[0]
-const resultId = _URLParams[1]
 
 // Получить данные о клиенте
 function DBgetUserData(id, func, func_error) {
@@ -40,36 +34,49 @@ function DBgetUserData(id, func, func_error) {
     })
 }
 
-DBgetUserData(clientId, (data) => {
-    let results = data.results.reverse()
-    console.log(results);
-    
+let URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
+if (URLParams["id"] !== undefined) {
+    const _URLParams = URLParams["id"].split("_")
+    const clientId = _URLParams[0]
+    const resultId = _URLParams[1]
 
-    // Если есть второй id - рендер конкретного результата клиента
-    if (resultId !== undefined) {
-        let result = 0
-        if (resultId.length < 5) { // Поиск по порядковому номеру если id диагностики 4 цифры
-            result = results[resultId] 
-        } else { // Поиск по дате прохождения
-            result = results.find(result => result.date == resultId)
+    DBgetUserData(clientId, (data) => {
+        let results = data.results.reverse()
+
+        // Если есть второй id - рендер конкретного результата клиента
+        if (resultId !== undefined) {
+            let result = 0
+            if (resultId.length < 5) { // Поиск по порядковому номеру если id диагностики 4 цифры
+                result = results[resultId] 
+            } else { // Поиск по дате прохождения
+                result = results.find(result => result.date == resultId)
+            }
+            
+            if (!result) {
+                renderError()
+                return
+            }
+            
+            result["name"] = data.name
+            result["diagnostic-title"] = diagnostics[result["diagnostic-id"]]
+            renderResult(result)
+        } else {
+            for (let i in results) {
+                results[i]["name"] = data.name
+                results[i]["diagnostic-title"] = diagnostics[results[i]["diagnostic-id"]]
+            }
+            
+            results.forEach(element => {
+                renderResult(element)
+            })
         }
-        
-        result["name"] = data.name
-        result["diagnostic-title"] = diagnostics[result["diagnostic-id"]]
-        renderResult(result)
-    } else {
-        for (let i in results) {
-            results[i]["name"] = data.name
-            results[i]["diagnostic-title"] = diagnostics[results[i]["diagnostic-id"]]
-        }
-        
-        results.forEach(element => {
-            renderResult(element)
-        })
-    }
-}, (error) => {
-    $("section").append(`<div><h3>Невозможно отобразить результаты!</h3><h3>Возможно вы перешли по неправильной ссылке.</h3></div>`)
-})
+    }, (error) => {
+        renderError()
+    })
+} else {
+    renderError()
+}
+
 
 function getData(timestamp) {
     let date = new Date(Number(timestamp))
