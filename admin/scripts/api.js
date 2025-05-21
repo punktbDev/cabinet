@@ -45,6 +45,7 @@ function DBgetClients(func) {
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
         },
+        timeout: 60000,
         success: func
     })
 }
