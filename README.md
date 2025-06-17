@@ -1,7 +1,7 @@
 ## Домены
 
 Новый github-pages
-- Пункт Б: https://conclusion.punkt-b.pro
+- Пункт Б: https://cabinet-punkt-b.vercel.app
 
 (Перестал работать в рф)
 - Vercel: https://lk.punkt-b.pro
