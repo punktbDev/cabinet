@@ -184,27 +184,47 @@ let diagnostics = [
     {id: 6, title: "Мои потребности (Взрослый)", link: DIAGNOSTICS_URL + "/my-needs.html?manager-id="},
     {id: 7, title: "Антирейтинг профессий (Детский)", link: DIAGNOSTICS_URL + "/antirating-of-professions-kid.html?manager-id="},
     {id: 8, title: "Антирейтинг профессий (Взрослый)", link: DIAGNOSTICS_URL + "/antirating-of-professions.html?manager-id="},
-    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.) (Ютуб)", link: DIAGNOSTICS_URL + "/interview-kid.html?manager-id="},
-    {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview-kid.html?vk&manager-id="},
-    {id: 10, title: "Интервью (Для всех возрастов) (Ютуб)", link: DIAGNOSTICS_URL + "/interview.html?manager-id="},
-    {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview.html?vk&manager-id="},
+    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.)", link: DIAGNOSTICS_URL + "/interview-kid.html?manager-id="},
+    {id: 10, title: "Интервью (Для всех возрастов)", link: DIAGNOSTICS_URL + "/interview.html?manager-id="},
     {id: 11, title: "8 Кадров (Детский)", link: DIAGNOSTICS_URL + "/8-frames-kid.html?manager-id="},
     {id: 12, title: "8 Кадров (Взрослый)", link: DIAGNOSTICS_URL + "/8-frames.html?manager-id="},
     {id: 13, title: "Исследование ценностей", link: DIAGNOSTICS_URL + "/exploring-values.html?manager-id="},
-    {id: 14, title: "Учебная мотивация", link: DIAGNOSTICS_URL + "/learning-motivation.html?manager-id="}
+    {id: 14, title: "Учебная мотивация", link: DIAGNOSTICS_URL + "/learning-motivation.html?manager-id="},
+    {id: 15, title: "Диагностика жизнестойкости", link: DIAGNOSTICS_URL + "/viability.html?manager-id="},
+    {id: 16, title: "10 вопросов", link: DIAGNOSTICS_URL + "/10-questions.html?manager-id="},
+    {id: 17, title: "Я на работе", link: DIAGNOSTICS_URL + "/im-at-work.html?manager-id="}
 ]
 
 function renderDiagnostics() {
     // Очищаем контент перед рендером
     $("#container-diagnostics .content").html("")
 
-    if (!userData.is_full_access) {
-        for (let i = 1; i < diagnostics.length; i++) {
-            diagnostics[i].link = "Недоступно"
-        }
-    }
+    // Тут вырезал блок 
 
-    for (diagnostic of diagnostics) {
+    // Вставка диагностик с вк видео и добавление постфикса "(Ютуб)"
+    const additionalDiagnostics = [
+        {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview-kid.html?vk&manager-id="},
+        {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview.html?vk&manager-id="}
+    ];
+
+    const updatedDiagnostics = diagnostics.flatMap(item => {
+        if (item.id === 9 && userData.available_diagnostics.includes(9)) {
+            const updatedItem = {...item, title: item.title + " (Ютуб)"};
+            return [updatedItem, additionalDiagnostics[0]];
+        }
+
+        if (item.id === 10 && userData.available_diagnostics.includes(10)) {
+            const updatedItem = {...item, title: item.title + " (Ютуб)"};
+            return [updatedItem, additionalDiagnostics[1]];
+        }
+
+        return [item];
+    });
+
+    // Удаление новых диагностик из рендера, но не из логики открытой карточки клиента
+    updatedDiagnostics.splice(-3, 3);
+
+    for (let diagnostic of updatedDiagnostics) {
         if (diagnostic.link !== "Недоступно") {
             $("#container-diagnostics .content").append(`
                 <div class="diagnostic" id="diagnostic-${diagnostic.id}">
@@ -491,12 +511,6 @@ function renderOpenCard(cardId) {
 
         let resultDate = resultDay + "." + resultMonth + "." + resultYear + "   " + resultHours + ":" + resultMinutes
 
-
-        // Если в конце названия написано "(Ютуб)"
-        if (diagnostic.title.endsWith("(Ютуб)")) {
-            diagnostic.title = diagnostic.title.replace(" (Ютуб)", "")
-        }
-
         // Добавляем результат в открытую карточку
         $(".results-container").append(`
             <div class="result" id="result-${i}">
@@ -602,131 +616,22 @@ $("#search-archive").on("input", () => {
     }
 })
 
-let managers = {}
-
-// id менеджера для блокировки
-let blockManagerId = null
-
-// id менеджера для access
-let accessManagerId = null
-
-
-// Получаем всех клиентов
-function renderManagers() {
-    DBgetAllManagers((data) => {
-        managers = data.data
-
-        // Обнуляем
-        $("#manager-list").html("")
-        $("#container-managers .content").html("")
-        containerManagersHtml = "" // Отчищаем отрендеренный код, что бы загрузить актуальную информацию
-
-
-        // Фильтр менеджеров по id
-        managers = managers.sort((x,y) => {return x.id - y.id})
-
-        for (manager of managers) {
-            // Пропускаем админа
-            if (!manager.is_admin) {
-                $("#manager-list").append(
-                    $('<option>', {
-                        value: manager.id.toString(),
-                        text: manager.name + " " + manager.surname
-                    })
-                )
-
-
-                $("#container-managers .content").append(`
-                    <div class="manager-container" id="manager-container-${manager.id}">
-                        <div class="input-block">
-                            <p class="p1-strong">Специалист
-                                <img class="full-access-manager" id="full-access-manager-${manager.id}" src="https://sun9-34.userapi.com/impg/gG51WJutAI3RFzxuq1EiCru1wFPpgOlvrnfCTg/qyBcDhdxLHY.jpg?size=23x14&quality=96&sign=707242a5da634fab01df9a0225506022&type=album" alt="block">
-                                <img class="block-manager" id="block-manager-${manager.id}" src="https://sun9-23.userapi.com/impg/JV9hb7LRRbf-1P2DuqoS_74teV7VlbZvoINl0g/hpx-E9ZxEj0.jpg?size=12x12&quality=96&sign=bef4f2fa82c0b1a9a1a2f774c37ed9c1&type=album" alt="block">
-                            </p>
-                            <input class="p1 input-manager js-input-name" readonly value="${manager.name} ${manager.surname}">
-                        </div>
-        
-                        <div class="input-block">
-                            <p>Пароль</p>
-                            <input class="p1 input-manager" readonly value="${manager.password}">
-                            <input class="hidden js-input-password" readonly value="${manager.password}">
-                        </div>
-        
-                        <div class="input-block">
-                            <p>Email</p>
-                            <input class="p1 input-manager js-input-email" readonly value="${manager.login}">
-                        </div>
-                    </div>
-                `)
-
-
-                // Если менеджер заблокирован, то добавляем класс
-                if (!manager.is_active) {
-                    $("#manager-container-" + manager.id).addClass("blocked")
-                }
-
-
-                // Добавляем переключатель для полного доступа
-                if (!manager.is_full_access) {
-                    $("#full-access-manager-" + manager.id).addClass("off")
-                }
-
-
-            } else { // Нулевой пункт это все специалисты
-                $("#manager-list").append(
-                    $('<option>', {
-                        value: "1",
-                        text: "Все специалисты"
-                    })
-                )
-            }
-        }
-    })
-}
-
-// Обвернул в функцию что бы рендерить позже в добавлении менеджера
-renderManagers()
-
-$("#container-managers .content").on("click tap", ".block-manager", (event) => {
-    $("#managers-block-wrapper").css("display", "flex")
-
-    blockManagerId = parseInt(event.currentTarget.id.split("-")[2])
-    let manager = managers.find(el => el.id === blockManagerId)
-
-    // Если он активный - блокируем
-    if (manager.is_active) {
-        $("#managers-block-text").text("Вы уверены, что хотите заблокировать специалиста?")
-    } else {
-        $("#managers-block-text").text("Вы уверены, что хотите разблокировать специалиста?")
-    }
-})
-
-$("#container-managers .content").on("click tap", ".full-access-manager", (event) => {
-    $("#managers-access-wrapper").css("display", "flex")
-
-    accessManagerId = parseInt(event.currentTarget.id.split("-")[3])
-    let manager = managers.find(el => el.id === accessManagerId)
-
-    // Если он активный - блокируем
-    if (manager.is_full_access) {
-        $("#managers-access-text").text("Выключить полную версию для специалиста?")
-    } else {
-        $("#managers-access-text").text("Включить полную версию для специалиста?")
-    }
-})
-
 let clients = {}
 let newCardCount = 0 // Количество новых карточек
 
 // Получаем всех клиентов
-DBgetClients((data) => {
-    // Если data undefined (Нету клиентов), то пустой массив
-    clients = data !== undefined ? data : []
+// DBgetClients((data) => {
+//     // Если data undefined (Нету клиентов), то пустой массив
+//     console.log(data);
+//     clients = data !== undefined ? JSON.parse(data) : []
+    
+//     clients = JSON.parse(data)
+    
 
-    // Ставим количество новых карточек
-    newCardCount = clients.filter(item => item.new && !item.in_archive).length
-    $("#clients-count").text(newCardCount);
+//     // Ставим количество новых карточек
+//     newCardCount = clients.filter(item => item.new && !item.in_archive).length
+//     $("#clients-count").text(newCardCount);
 
-    // Рендерим список
-    renderClients(clients)
-})
+//     // Рендерим список
+//     renderClients(clients)
+// })

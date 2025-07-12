@@ -184,27 +184,56 @@ let diagnostics = [
     {id: 6, title: "Мои потребности (Взрослый)", link: DIAGNOSTICS_URL + "/my-needs.html?manager-id="},
     {id: 7, title: "Антирейтинг профессий (Детский)", link: DIAGNOSTICS_URL + "/antirating-of-professions-kid.html?manager-id="},
     {id: 8, title: "Антирейтинг профессий (Взрослый)", link: DIAGNOSTICS_URL + "/antirating-of-professions.html?manager-id="},
-    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.) (Ютуб)", link: DIAGNOSTICS_URL + "/interview-kid.html?manager-id="},
-    {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview-kid.html?vk&manager-id="},
-    {id: 10, title: "Интервью (Для всех возрастов) (Ютуб)", link: DIAGNOSTICS_URL + "/interview.html?manager-id="},
-    {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview.html?vk&manager-id="},
+    {id: 9, title: "Интервью (Дети, с пояснением к 43 проф.)", link: DIAGNOSTICS_URL + "/interview-kid.html?manager-id="},
+    {id: 10, title: "Интервью (Для всех возрастов)", link: DIAGNOSTICS_URL + "/interview.html?manager-id="},
     {id: 11, title: "8 Кадров (Детский)", link: DIAGNOSTICS_URL + "/8-frames-kid.html?manager-id="},
     {id: 12, title: "8 Кадров (Взрослый)", link: DIAGNOSTICS_URL + "/8-frames.html?manager-id="},
     {id: 13, title: "Исследование ценностей", link: DIAGNOSTICS_URL + "/exploring-values.html?manager-id="},
-    {id: 14, title: "Учебная мотивация", link: DIAGNOSTICS_URL + "/learning-motivation.html?manager-id="}
+    {id: 14, title: "Учебная мотивация", link: DIAGNOSTICS_URL + "/learning-motivation.html?manager-id="},
+    {id: 15, title: "Диагностика жизнестойкости", link: DIAGNOSTICS_URL + "/viability.html?manager-id="},
+    {id: 16, title: "10 вопросов", link: DIAGNOSTICS_URL + "/10-questions.html?manager-id="},
+    {id: 17, title: "Я на работе", link: DIAGNOSTICS_URL + "/im-at-work.html?manager-id="}
 ]
 
 function renderDiagnostics() {
     // Очищаем контент перед рендером
     $("#container-diagnostics .content").html("")
 
-    if (!userData.is_full_access) {
-        for (let i = 1; i < diagnostics.length; i++) {
+    // Если пришло с сервера что доступные диагностики null - то просто делаем пустой массив
+    if (userData.available_diagnostics === null) {
+        userData.available_diagnostics = []
+    }
+
+    for (let i = 1; i < diagnostics.length; i++) {
+        if (!userData.available_diagnostics.includes(diagnostics[i].id)) {
             diagnostics[i].link = "Недоступно"
         }
     }
 
-    for (diagnostic of diagnostics) {
+    // Вставка диагностик с вк видео и добавление постфикса "(Ютуб)"
+    const additionalDiagnostics = [
+        {id: 9.1, title: "Интервью (Дети, с пояснением к 43 проф.) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview-kid.html?vk&manager-id="},
+        {id: 10.1, title: "Интервью (Для всех возрастов) (Вк-видео)", link: DIAGNOSTICS_URL + "/interview.html?vk&manager-id="}
+    ];
+
+    const updatedDiagnostics = diagnostics.flatMap(item => {
+        if (item.id === 9 && userData.available_diagnostics.includes(9)) {
+            const updatedItem = {...item, title: item.title + " (Ютуб)"};
+            return [updatedItem, additionalDiagnostics[0]];
+        }
+
+        if (item.id === 10 && userData.available_diagnostics.includes(10)) {
+            const updatedItem = {...item, title: item.title + " (Ютуб)"};
+            return [updatedItem, additionalDiagnostics[1]];
+        }
+
+        return [item];
+    });
+
+    // Удаление новых диагностик из рендера, но не из логики открытой карточки клиента
+    updatedDiagnostics.splice(-3, 3);
+
+    for (let diagnostic of updatedDiagnostics) {
         if (diagnostic.link !== "Недоступно") {
             $("#container-diagnostics .content").append(`
                 <div class="diagnostic" id="diagnostic-${diagnostic.id}">
@@ -475,11 +504,6 @@ function renderOpenCard(cardId) {
 
         let resultDate = resultDay + "." + resultMonth + "." + resultYear + "   " + resultHours + ":" + resultMinutes
 
-        // Если в конце названия написано "(Ютуб)"
-        if (diagnostic.title.endsWith("(Ютуб)")) {
-            diagnostic.title = diagnostic.title.replace(" (Ютуб)", "")
-        }
-
         // Добавляем результат в открытую карточку
         $(".results-container").append(`
             <div class="result" id="result-${i}">
@@ -635,7 +659,7 @@ let newCardCount = 0 // Количество новых карточек
 // Получаем всех клиентов
 DBgetClients((data) => {
     // Если data undefined (Нету клиентов), то пустой массив
-    clients = data !== undefined ? data : []
+    clients = data !== undefined ? JSON.parse(data) : []
 
     // Ставим количество новых карточек
     newCardCount = clients.filter(item => item.new && !item.in_archive).length
