@@ -620,18 +620,15 @@ let clients = {}
 let newCardCount = 0 // Количество новых карточек
 
 // Получаем всех клиентов
-// DBgetClients((data) => {
-//     // Если data undefined (Нету клиентов), то пустой массив
-//     console.log(data);
-//     clients = data !== undefined ? JSON.parse(data) : []
-    
-//     clients = JSON.parse(data)
+DBgetClients((data) => {
+    // Если data undefined (Нету клиентов), то пустой массив
+    clients = data !== undefined ? data : []
     
 
-//     // Ставим количество новых карточек
-//     newCardCount = clients.filter(item => item.new && !item.in_archive).length
-//     $("#clients-count").text(newCardCount);
+    // Ставим количество новых карточек
+    newCardCount = clients.filter(item => item.new && !item.in_archive).length
+    $("#clients-count").text(newCardCount);
 
-//     // Рендерим список
-//     renderClients(clients)
-// })
+    // Рендерим список
+    renderClients(clients)
+})
