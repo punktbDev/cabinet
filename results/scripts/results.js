@@ -1,20 +1,23 @@
 // Все диагностики под их id
 let diagnostics = {
-    0: '43 Профессии',
-    1: '10 Любимых дел (Детский)',
-    2: '10 Любимых дел (Взрослый)',
-    3: 'Идеальная работа (Детский)',
-    4: 'Идеальная работа (Взрослый)',
-    5: 'Мои потребности (Детский)',
-    6: 'Мои потребности (Взрослый)',
-    7: 'Антирейтинг профессий (Детский)',
-    8: 'Антирейтинг профессий (Взрослый)',
-    9: 'Интервью (Дети, с пояснением к 43 проф.)',
-    10: 'Интервью (Для всех возрастов)',
-    11: '8 Кадров (Детский)',
-    12: '8 Кадров (Взрослый)',
-    13: 'Исследование ценностей',
-    14: 'Учебная мотивация',
+    0: "43 Профессии",
+    1: "10 Любимых дел (Детский)",
+    2: "10 Любимых дел (Взрослый)",
+    3: "Идеальная работа (Детский)",
+    4: "Идеальная работа (Взрослый)",
+    5: "Мои потребности (Детский)",
+    6: "Мои потребности (Взрослый)",
+    7: "Антирейтинг профессий (Детский)",
+    8: "Антирейтинг профессий (Взрослый)",
+    9: "Интервью (Дети, с пояснением к 43 проф.)",
+    10: "Интервью (Для всех возрастов)",
+    11: "8 Кадров (Детский)",
+    12: "8 Кадров (Взрослый)",
+    13: "Исследование ценностей",
+    14: "Учебная мотивация",
+    15: "Диагностика жизнестойкости",
+    16: "10 вопросов",
+    17: "Я на работе"
 }
 
 function renderError() {
@@ -605,5 +608,55 @@ function renderResult(result) {
                 </div>
             </div>
         `)
+    } else if (diagnosticId === 15) {
+        // Диагностика жизнестойкости
+
+        $("section").append(`
+            <div class="container-table">
+                <div class="d-table-info">
+                    <div class="d-table-input-block">
+                        <p><strong>Клиент</strong></p>
+                        <input type="text" value="${result.name}" readonly>
+                    </div>
+                    <div class="d-table-input-block">
+                        <p><strong>Название диагностики</strong></p>
+                        <input type="text" value="${result["diagnostic-title"]}" readonly>
+                    </div>
+                    <div class="d-table-input-block">
+                        <p>Дата прохождения</p>
+                        <input type="text" value="${getData(result.date)}" readonly>
+                    </div>
+                </div>
+                
+                <div class="d-table-two-column d-table-row_first">
+                    <p class="centered centered-text upper">Изменить текст</p>
+                    <p class="centered upper">Баллы</p>
+                </div>
+                
+                <div class="d-table-two-column">
+                    <p class="centered centered-text">Вовлечённость</p>
+                    <p class="centered">${result.data.involvement}</p>
+                </div>
+
+                <div class="d-table-two-column">
+                    <p class="centered centered-text">Контроль</p>
+                    <p class="centered">${result.data.control}</p>
+                </div>
+        
+                <div class="d-table-two-column">
+                    <p class="centered centered-text">Принятие риска</p>
+                    <p class="centered">${result.data.riskAcceptance}</p>
+                </div>
+        
+                <div class="d-table-two-column d-table-row_last">
+                    <p class="centered centered-text">Жизнестойкость</p>
+                    <p class="centered">${result.data.vitalityScore}</p>
+                </div>
+            </div>
+        `)
+    } else if (diagnosticId === 16) {
+        // 10 вопросов
+    } else if (diagnosticId === 17) {
+        // Я на работе
     }
 }
