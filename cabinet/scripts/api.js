@@ -26,14 +26,16 @@ function DBchangeUserData(data, func, func_error) {
 }
 
 // Получить актуальную информацию о клиентах менеджера
-function DBgetClients(func) {
+function DBgetClients(func, func_error) {
     $.ajax({
         url: API_URL + "/clients",
         method: "GET",
         headers: {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
         },
-        success: func
+        timeout: 60000,
+        success: func,
+        error: func_error
     })
 }
 

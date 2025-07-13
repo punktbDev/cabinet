@@ -38,7 +38,7 @@ function DBgetAllManagers(func) {
 }
 
 // Получить актуальную информацию о всех клиентах
-function DBgetClients(func) {
+function DBgetClients(func, func_error) {
     $.ajax({
         url: API_URL + "/clients",
         method: "GET",
@@ -46,7 +46,8 @@ function DBgetClients(func) {
             "Authorization": "Basic " + btoa(userData.login + ":" + userData.password)
         },
         timeout: 60000,
-        success: func
+        success: func,
+        error: func_error
     })
 }
 

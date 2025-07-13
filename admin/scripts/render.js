@@ -621,9 +621,8 @@ let newCardCount = 0 // Количество новых карточек
 
 // Получаем всех клиентов
 DBgetClients((data) => {
-    // Если data undefined (Нету клиентов), то пустой массив
-    clients = data !== undefined ? data : []
-    
+    // Если data undefined (Нету клиентов), то пустой массив | Иначе преобразуем массив массивов в плоский массив
+    clients = data !== undefined ? data.flat() : []
 
     // Ставим количество новых карточек
     newCardCount = clients.filter(item => item.new && !item.in_archive).length
@@ -631,4 +630,6 @@ DBgetClients((data) => {
 
     // Рендерим список
     renderClients(clients)
-})
+}), (error) => {
+    console.log("DBgetClients => error: " + error);
+}
