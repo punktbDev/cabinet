@@ -59,9 +59,9 @@ form.addEventListener('submit', (event) => {
             localStorage.setItem("userData", JSON.stringify(data))
 
             if (data.is_admin) {
-                location.href = "/admin/"
+                location.href = "../admin"
             } else {
-                location.href = "/"
+                location.href = "../"
             }
         },
         error: (error) => {
@@ -79,7 +79,7 @@ form.addEventListener('submit', (event) => {
 
 // Кнопка "забыли пароль"
 $("#forgot-password").on("click tap", () => {
-    window.open("/forgot-password/", "_blank")
+    window.open("../forgot-password/", "_blank")
 })
 
 

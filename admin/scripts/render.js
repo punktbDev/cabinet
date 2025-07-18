@@ -30,13 +30,13 @@ DBgetUserData((data) => {
 }, (error) => {
     // Если ошибка - это значит что данные для входа изменились. Удаляем старую информацию и переносим на вход
     localStorage.removeItem("userData")
-    location.href = "/login/"
+    location.href = "../login"
 })
 
 
 // Отправка формы профиля
 const profileForm = document.querySelector("#profile-form")
-profileForm.addEventListener('submit', (event) => {
+profileForm.addEventListener("submit", (event) => {
     // Отключение базового перехода
     event.preventDefault()
 
@@ -98,7 +98,7 @@ $("#password-new, #password-new-again").on("input", () => { // Удаление 
 
 // Отправка формы пароля профиля
 const passwordForm = document.querySelector("#password-form")
-passwordForm.addEventListener('submit', (event) => {
+passwordForm.addEventListener("submit", (event) => {
     // Отключение базового перехода
     event.preventDefault()
 
@@ -199,7 +199,7 @@ function renderDiagnostics() {
     // Очищаем контент перед рендером
     $("#container-diagnostics .content").html("")
 
-    // Тут вырезал блок 
+    // Тут блок с отображение "Недоступно" у клиента
 
     // Вставка диагностик с вк видео и добавление постфикса "(Ютуб)"
     const additionalDiagnostics = [
@@ -208,12 +208,12 @@ function renderDiagnostics() {
     ];
 
     const updatedDiagnostics = diagnostics.flatMap(item => {
-        if (item.id === 9 && userData.available_diagnostics.includes(9)) {
+        if (item.id === 9) {
             const updatedItem = {...item, title: item.title + " (Ютуб)"};
             return [updatedItem, additionalDiagnostics[0]];
         }
 
-        if (item.id === 10 && userData.available_diagnostics.includes(10)) {
+        if (item.id === 10) {
             const updatedItem = {...item, title: item.title + " (Ютуб)"};
             return [updatedItem, additionalDiagnostics[1]];
         }
@@ -359,101 +359,77 @@ function renderClient(card) {
 
 // Функция рендера всех карточек
 function renderClients(data) {
+    // Очищаем контент
     $("#container-clients .content").html("") // Очищаем контент
     $("#container-archive .content").html("") // Очищаем контент
 
     // Карточки сортированные по дате от новых к старым
-    let clientsData = data.sort((x,y) => {return x.date - y.date}).reverse()
+    let clientsData = data.sort((x, y) => x.date - y.date).reverse()
 
-    // Отделяем обычные от архивных что бы применить на них разные фильтры
+    // Разделяем обычные и архивные
     let cardsClients = clientsData.filter(item => !item.in_archive)
     let cardsArchive = clientsData.filter(item => item.in_archive)
 
-
-    // Фильтр От
-    if (filterClients.from !== "") {
-        let fromDate = new Date(filterClients.from)
-        cardsClients = cardsClients.filter(card => {return fromDate < card.date})
+    // Функция применения фильтров: От, До, сортировка, менеджер
+    function applyFilters(cards, cfg) {
+        // Фильтр От
+        if (cfg.from !== "") {
+            cards = cards.filter(card => new Date(cfg.from) < card.date)
+        }
+        // Фильтр До
+        if (cfg.to !== "") {
+            cards = cards.filter(card => card.date < new Date(cfg.to))
+        }
+        // Сортировка по имени
+        if (cfg.filter === "name") {
+            cards.sort((a, b) => a.name.localeCompare(b.name))
+        }
+        // Фильтр по менеджеру
+        if (cfg.manager !== "1") {
+            cards = cards.filter(item => item.manager_id === parseInt(cfg.manager))
+        }
+        return cards
     }
 
-    // Фильтр До
-    if (filterClients.to !== "") {
-        let toDate = new Date(filterClients.to)
-        cardsClients = cardsClients.filter(card => {return card.date < toDate})
-    }
+    // Применяем фильтры к спискам
+    cardsClients = applyFilters(cardsClients, filterClients)
+    cardsArchive = applyFilters(cardsArchive, filterArchive)
 
-    // Фильтр клиентов в алфавитном порядке
-    if (filterClients.filter === "name") {
-        cardsClients = cardsClients.sort((a,b) => {
-            if (a.name < b.name) {
-                return -1;
-            }
-            if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        })
-    }
-
-    // Фильтр по менеджеру
-    if (filterClients.manager !== "1") { // Если не все менеджеры, то фильтруем
-        cardsClients = cardsClients.filter(item => item.manager_id === parseInt(filterClients.manager))
-    }
-
-
-    // Фильтр От
-    if (filterArchive.from !== "") {
-        let fromDate = new Date(filterArchive.from)
-        cardsArchive = cardsArchive.filter(card => {return fromDate < card.date})
-    }
-
-    // Фильтр До
-    if (filterArchive.to !== "") {
-        let toDate = new Date(filterArchive.to)
-        cardsArchive = cardsArchive.filter(card => {return card.date < toDate})
-    }
-
-    // Фильтр архива в алфавитном порядке
-    if (filterArchive.filter === "name") {
-        cardsArchive = cardsArchive.sort((a,b) => {
-            if (a.name < b.name) {
-                return -1;
-            }
-            if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        })
-    }
-
-
-    // Фильтр по менеджеру
-    if (filterArchive.manager !== "1") { // Если не все менеджеры, то фильтруем
-        cardsArchive = cardsArchive.filter(item => item.manager_id === parseInt(filterArchive.manager))
-    }
-
-
-    // Рендер обычных карточек
-    for (card of cardsClients) {
-        renderClient(card)
-    }
-
-    // Рендер архивных карточек
-    for (card of cardsArchive) {
-        renderClient(card)
-    }
-    
-
-    // По нажатию на карточку рендер открытой карточки
-    $(`.card`).unbind()
-    $(`.card`).on("click tap", (event) => {
-        renderOpenCard(event.currentTarget.id.split("-")[1]) // Передаем id карточки на которую нажали
+    // Делегируем все карточки для функции открытия
+    $("#container-clients .content, #container-archive .content").off("click tap", ".card")
+    $("#container-clients .content, #container-archive .content").on("click tap", ".card", function() {
+        const cardId = this.id.split("-")[1];
+        renderOpenCard(cardId) // Передаем id карточки
     })
 
+    $("#clients-loading-count").show() // И показываем число загрузок
+    const BATCH_SIZE = 50
 
-    // Триггерим поиск после рендера
-    $("#search-clients").trigger("input")
-    $("#search-archive").trigger("input")
+    function renderBatch(cards, index, isArchive) {
+        $("#clients-loading-count").text(`${index}/${cards.length}`)
+        
+        // Отрисовка батча карточек
+        const batch = cards.slice(index, index + BATCH_SIZE)
+        for (let card of batch) {
+            renderClient(card)
+        }
+
+        if (index + BATCH_SIZE < cards.length) {
+            // Рекурсивно отрисовать следующий батч без блокировки UI
+            setTimeout(() => renderBatch(cards, index + BATCH_SIZE, isArchive), 1)
+        } else if (!isArchive) {
+            // После рендера обычных карточек — начать рендер архива
+            renderBatch(cardsArchive, 0, true)
+        } else {
+            // Триггерим поиск после рендера
+            $("#search-clients").trigger("input")
+            $("#search-archive").trigger("input")
+            $("#clients-loading-count").hide()
+        }
+    }
+
+    // Запускаем поэтапную отрисовку: сначала обычные, затем архивные
+    renderBatch(cardsClients, 0, false)
 }
 
 
@@ -474,7 +450,7 @@ function renderOpenCard(cardId) {
     $("#open-card-manager").val(managers[manager].name + " " + managers[manager].surname)
 
     // Меняем лейбл у инпута если телефон родителя
-    if (card["is-phone-adult"]) {
+    if (card["is_phone_adult"]) {
         $("#open-card-phone-label").text("Телефон родителя")
     } else {
         $("#open-card-phone-label").text("Телефон")
@@ -618,8 +594,8 @@ let newCardCount = 0 // Количество новых карточек
 
 // Получаем всех клиентов
 DBgetClients((data) => {
-    // Если data undefined (Нету клиентов), то пустой массив | Иначе преобразуем массив массивов в плоский массив
-    clients = data !== undefined ? data.flat() : []
+    // Если data === undefined (Нету клиентов), то пустой массив | Иначе преобразуем массив массивов в плоский массив
+    clients = data === undefined ? [] : data.flat()
 
     // Ставим количество новых карточек
     newCardCount = clients.filter(item => item.new && !item.in_archive).length

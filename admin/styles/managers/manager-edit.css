@@ -1,0 +1,14 @@
+/* Вынес повторяющиеся элементы в manager-modal.css */
+
+#manager-edit-wrapper .manager-modal__buttons {
+    margin-top: 8px;
+}
+
+/* Изначально кнопка копирования пароля скрыта */
+#manager-edit__copy-password {
+    display: none;
+}
+
+#manager-edit-error {
+    margin-bottom: -8px;
+}

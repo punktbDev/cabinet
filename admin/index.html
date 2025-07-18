@@ -17,7 +17,15 @@
     <link rel="stylesheet" href="./styles/page.css">
     <link rel="stylesheet" href="./styles/logo.css">
     <link rel="stylesheet" href="./styles/filters.css">
-    <link rel="stylesheet" href="./styles/managers.css">
+
+    <link rel="stylesheet" href="./styles/managers/managers.css">
+    <link rel="stylesheet" href="./styles/managers/managers-phone.css">
+    <link rel="stylesheet" href="./styles/managers/manager-modal.css">
+    <link rel="stylesheet" href="./styles/managers/manager-modal-phone.css">
+    <link rel="stylesheet" href="./styles/managers/manager-edit.css">
+    <link rel="stylesheet" href="./styles/managers/manager-diagnostics.css">
+
+    <link rel="stylesheet" href="./styles/clients-loading-count.css">
     <link rel="stylesheet" href="./styles/phone.css">
 </head>
 <body>
@@ -153,6 +161,7 @@
                     </div>
     
                     <img id="filter-clients" src="https://sun9-75.userapi.com/impg/u9cGeQ6ew7_9I_QhM5rgIdo_ut6tpqR8-tZXWA/gisscmRmz3I.jpg?size=25x25&quality=96&sign=d02409b63c2dc95d043f603c75a4b9e8&type=album" alt="filter">
+                    <p id="clients-loading-count">0/0</p>
                 </div>
     
                 <div class="content">
@@ -282,64 +291,28 @@
             <div class="container hidden" id="container-managers">
                 <div class="form-title">
                     <img class="container-back" src="https://sun9-64.userapi.com/impg/rUA7pf4L-OYqslHxsRdFexaqvJHatedm7gem4w/9cMlyT7_OCI.jpg?size=20x20&quality=96&sign=b0f6cc6229f18413c69e04a77fa729cc&type=album" alt="back">
-                    <p class="p1-strong">Специалисты</p>
-                    <img title="Поиск по специалистам" id="search-manager" src="https://sun9-80.userapi.com/impg/W2bFH0NIX_xnPc1CksfkncBGvSJEkfZ9-8efWQ/2g5hYhGhVFE.jpg?size=20x20&quality=96&sign=f8da885d905a08196be80d65d271bf2d&type=album" alt="search">
+                    <div class="search-wrapper">
+                        <img src="https://sun9-37.userapi.com/impg/T8eXU9hjGKbidLoRfYcwhemoFYaUZqZhzReyOw/VDMiXpFuDTw.jpg?size=132x132&quality=96&sign=f14d29f2f37a347cc7152825a1841fa6&type=album" alt="search">
+                        <input type="text" class="p1" id="managers-search" placeholder="Поиск">
+                    </div>
+                    <div class="container-managers__title">
+                        <p class="p1-strong">Специалисты</p>
+                        <img src="./assets/manager-add.svg" alt="manager-add" id="manager-add-button">
+                    </div>
                 </div>
     
                 <div class="content">
                     <!-- <div class="manager-container">
-                        <div class="input-block">
-                            <p class="p1-strong">Специалист
-                                <img src="https://sun9-23.userapi.com/impg/JV9hb7LRRbf-1P2DuqoS_74teV7VlbZvoINl0g/hpx-E9ZxEj0.jpg?size=12x12&quality=96&sign=bef4f2fa82c0b1a9a1a2f774c37ed9c1&type=album" alt="block">
-                            </p>
-                            <input class="p1 input-manager" readonly value="Имя Фамилия">
-                        </div>
-        
-                        <div class="input-block">
-                            <p>Пароль</p>
-                            <input class="p1 input-manager" readonly value="Пароль!">
-                        </div>
-        
-                        <div class="input-block">
-                            <p>Email</p>
-                            <input class="p1 input-manager" readonly value="12345678@mail.ru">
+                        <p>Маша Иванова</p>
+                        <div class="manager-buttons">
+                            <button>
+                                <img src="./assets/manager-edit.svg" alt="manager-edit">
+                                Редактировать
+                            </button>
+                            <button>Диагностики</button>
                         </div>
                     </div> -->
                 </div>
-    
-                <div class="form-title">
-                    <p class="p1-strong">Новый специалист</p>
-                </div>
-    
-                <form class="new-manager">
-                    <div class="input-block">
-                        <p class="p1-strong">Специалист</p>
-                        <input class="p1" type="text" id="manager-name" name="manager-name" minlength="1" maxlength="100" required>
-                    </div>
-    
-                    <div class="input-block">
-                        <p>Email</p>
-                        <div class="password-input">
-                            <input class="p1" type="text" id="manager-email" name="manager-email" minlength="1" maxlength="100" required>
-                            <img title="Вставить текст" id="manager-email-insert" src="https://sun9-46.userapi.com/impg/Y7DiBFs-QLy5JTgnuLG2jQAR8i-KcmgS2x_BpQ/SJcWy416Mlk.jpg?size=20x20&quality=96&sign=b44ec41ea107e4f521add84657ac84c9&type=album" alt="gen-pass">
-                        </div>
-                    </div>
-    
-                    <div class="input-block">
-                        <p>Пароль <small>(Мин. 8 символов)</small></p>
-                        <div class="password-input">
-                            <input class="p1" type="text" id="manager-pass" name="manager-pass" minlength="8" maxlength="64" required>
-                            <img title="Сгенерировать пароль" id="manager-pass-gen" src="https://sun9-59.userapi.com/impg/fPdWfoAQdQry7mh6-kybm4z6042UBq2WtrAuVw/wXLix-aZc3Y.jpg?size=22x22&quality=96&sign=3276787c40538ae258279bab047e6fc4&type=album" alt="gen-pass">
-                        </div>
-                        
-                    </div>
-    
-                    <div class="input-block">
-                        <button class="p1" id="new-manager-submit" type="submit">Создать специалиста</button>
-                    </div>
-    
-                    <p class="new-manager__error">Ошибка: Используйте только англ. буквы, цифры и спецсимволы</p>
-                </form>
             </div>
         </section>
     
@@ -383,45 +356,135 @@
                 </div>
             </div>
         </div>
-        
     
-        <!-- Поиск по менеджерам -->
-        <div id="managers-filter-wrapper">
-            <div class="managers-search">
-                <div class="filter-title">
-                    <p class="p1-strong">Сортировка</p>
-                    <p id="managers-filter-reset">Сбросить</p>
-                </div>
-                <div class="filter-content">
-                    <input type="text" id="managers-filter-name" placeholder="Введите ФИО или почту">
+        <!-- Добавление менеджера -->
+        <div class="manager-modal__wrapper" id="manager-add-wrapper">
+            <div class="manager-modal">
+                <div class="manager-modal__content">
+                    <div class="manager-modal__title">
+                        <p class="p1-strong">Новый специалист</p>
+                        <img class="manager-modal__close-button" id="manager-add__close-button" src="./assets/close-modal.svg" alt="close-modal">
+                    </div>
     
-                    <button class="p1" id="managers-filter-submit">Применить</button>
+                    <form class="manager-modal__form" id="manager-add-form">
+                        <div class="manager-input">
+                            <label for="manager-add-name" class="p1">Имя Фамилия</label>
+                            <input type="text" id="manager-add-name" name="manager-add-name" minlength="1" maxlength="100" required>
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-add-email" class="p1">Email</label>
+                            <div class="manager-input__wrapper">
+                                <input type="email" id="manager-add-email" name="manager-add-email" minlength="1" maxlength="100" required>
+                                <img class="manager-input__wrapper-img" id="manager-add__insert-email" src="./assets/copy.svg" alt="insert" title="Вставить текст">
+                            </div>
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-add-password" class="p1">Пароль</label>
+                            <div class="manager-input__wrapper">
+                                <input type="text" id="manager-add-password" name="manager-add-password" minlength="8" maxlength="64" required>
+                                <img class="manager-input__wrapper-img" id="manager-add__generate-password" src="./assets/key.svg" alt="generate" title="Сгенерировать пароль">
+                            </div>
+                        </div>
+    
+                        <p class="manager-modal__error" id="manager-add-error">Ошибка:</p>
+    
+                        <div class="manager-modal__buttons">
+                            <button class="manager-modal__button-cancel" id="manager-add__cancel-button" type="reset">Отменить</button>
+                            <button class="manager-modal__button-submit" id="manager-add__submit-button" type="submit">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+
+        <!-- Изменение менеджера -->
+        <div class="manager-modal__wrapper" id="manager-edit-wrapper">
+            <div class="manager-modal">
+                <div class="manager-modal__content">
+                    <div class="manager-modal__title">
+                        <p class="p1-strong">Профиль специалиста</p>
+                        <img class="manager-modal__close-button" id="manager-edit__close-button" src="./assets/close-modal.svg" alt="close-modal">
+                    </div>
     
+                    <form class="manager-modal__form" id="manager-edit-form">
+                        <div class="manager-input">
+                            <label for="manager-edit-name" class="p1">Имя Фамилия</label>
+                            <div class="manager-input__wrapper">
+                                <input type="text" id="manager-edit-name" name="manager-edit-name" minlength="1" maxlength="100" required>
+                                <img class="manager-input__wrapper-img" id="manager-edit__copy-name" src="./assets/copy.svg" alt="copy" title="Скопировать текст">
+                            </div>
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-edit-email" class="p1">Email</label>
+                            <div class="manager-input__wrapper">
+                                <input type="email" id="manager-edit-email" name="manager-edit-email" minlength="1" maxlength="100" required>
+                                <img class="manager-input__wrapper-img" id="manager-edit__copy-email" src="./assets/copy.svg" alt="copy" title="Скопировать текст">
+                            </div>
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-edit-password" class="p1">Пароль</label>
+                            <div class="manager-input__wrapper">
+                                <input type="text" id="manager-edit-password" name="manager-edit-password" minlength="8" maxlength="64" readonly required>
+                                <img class="manager-input__wrapper-img" id="manager-edit__show-password" src="./assets/open-eye.svg" alt="show-password" title="Показать пароль">
+                                <img class="manager-input__wrapper-img" id="manager-edit__copy-password" src="./assets/copy.svg" alt="copy">
+                            </div>
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-edit-new-password" class="p1">Новый пароль</label>
+                            <input type="text" id="manager-edit-new-password" name="manager-edit-new-password" minlength="8" maxlength="64">
+                        </div>
+                        <div class="manager-input">
+                            <label for="manager-edit-password-again" class="p1">Подтвердить пароль</label>
+                            <input type="text" id="manager-edit-password-again" name="manager-edit-password-again" minlength="8" maxlength="64">
+                        </div>
     
-        <!-- Блокировка менеджера -->
-        <div id="managers-block-wrapper">
-            <div class="managers-block">
-                <p id="managers-block-text">Вы уверены, что хотите заблокировать специалиста?</p>
+                        <div class="manager-input__checkbox-wrapper">
+                            <input type="checkbox" id="manager-edit-access" name="manager-edit-access">
+                            <div class="manager-input-checkbox"></div>
+                            <label for="manager-edit-access" class="p1">Полная версия</label>
+                        </div>
+
+                        <div class="manager-input__checkbox-wrapper">
+                            <input type="checkbox" id="manager-edit-active" name="manager-edit-active">
+                            <div class="manager-input-checkbox"></div>
+                            <label for="manager-edit-active" class="p1">Закрыть доступ</label>
+                        </div>
     
-                <div class="managers-block__buttons">
-                    <button class="p1" id="managers-block-yes">Да</button>
-                    <button class="p1" id="managers-block-no">Нет</button>
+                        <p class="manager-modal__error" id="manager-edit-error">Ошибка:</p>
+    
+                        <div class="manager-modal__buttons">
+                            <button class="manager-modal__button-cancel" id="manager-edit__cancel-button" type="reset">Отменить</button>
+                            <button class="manager-modal__button-submit" id="manager-edit__submit-button" type="submit">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+
+        <!-- Изменение доступа к диагностикам -->
+        <div class="manager-modal__wrapper" id="manager-diagnostics-wrapper">
+            <div class="manager-modal">
+                <div class="manager-modal__content">
+                    <div class="manager-modal__title">
+                        <p class="p1-strong">Доступ к диагностикам</p>
+                        <img class="manager-modal__close-button" id="manager-diagnostics__close-button" src="./assets/close-modal.svg" alt="close-modal">
+                    </div>
+                    <p>Отметь те диагностики, которые специалист сможет видеть и использовать</p>
+                    <div class="manager-modal__diagnostics-filters">
+                        <button class="manager-modal__filter" id="manager-modal__filter-all">Выбрать все</button>
+                    </div>
+                    <div class="manager-modal__diagnostics-container">
+                        <!-- <div class="manager-input__checkbox-wrapper">
+                            <input type="checkbox" id="manager-diagnostics-1" name="manager-diagnostics-1">
+                            <div class="manager-input-checkbox"></div>
+                            <label for="manager-diagnostics-1" class="p1">43 Профессии</label>
+                        </div> -->
+                    </div>
     
-    
-        <!-- Доступ менеджера -->
-        <div id="managers-access-wrapper">
-            <div class="managers-block">
-                <p id="managers-access-text">Включить полную версию для специалиста?</p>
-    
-                <div class="managers-block__buttons">
-                    <button class="p1" id="managers-access-yes">Да</button>
-                    <button class="p1" id="managers-access-no">Нет</button>
+                    <div class="manager-modal__buttons">
+                        <button class="manager-modal__button-cancel" id="manager-diagnostics__cancel-button">Отменить</button>
+                        <button class="manager-modal__button-submit" id="manager-diagnostics__submit-button">Сохранить</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -437,11 +500,13 @@
     <script src="./scripts/render.js"></script>
     <script src="./scripts/buttons.js"></script>
     <script src="./scripts/filters.js"></script>
-    
-    <script src="./scripts/managers-old.js"></script>
-    
-    <script src="./scripts/create-manager.js"></script>
-    <script src="./scripts/edit-manager.js"></script>
+
+    <script src="./scripts/managers/managers-render.js"></script>
+    <script src="./scripts/managers/managers-search.js"></script>
+    <script src="./scripts/managers/manager-add.js"></script>
+    <script src="./scripts/managers/manager-edit.js"></script>
+    <script src="./scripts/managers/manager-diagnostics.js"></script>
+
     <script src="./scripts/openResults.js"></script>
     <script src="./scripts/accessModal.js"></script>
 </body>

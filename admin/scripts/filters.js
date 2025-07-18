@@ -14,11 +14,11 @@ let filterArchive = {
 }
 
 
-// Выбраная вкладка для рендера клиенты или архив
+// Выбранная вкладка для рендера клиенты или архив
 function renderFilter(filterName) {
-    // Если фильтер clients
+    // Если фильтр clients
     if (filterName === "clients") {
-        // Если выбран фильтр даты, то ставим выбраным дату
+        // Если выбран фильтр даты, то ставим выбранную дату
         if (filterClients.filter === "date") {
             $("#filter-date").prop("checked", true)
             $("#filter-name").prop("checked", false)
@@ -32,7 +32,7 @@ function renderFilter(filterName) {
         $("#manager-list").val(filterClients.manager).change()
 
 
-        // Ставим что кнопка Применить сохранит в фильтр клиенов
+        // Ставим что кнопка Применить сохранит в фильтр клиентов
         $("#filter-submit").unbind()
         $("#filter-submit").on("click tap", () => {
             filterClients.filter = $(`input[type="radio"][name="filter-type"]:checked`).val()
@@ -45,7 +45,7 @@ function renderFilter(filterName) {
             renderClients(clients)
         })
 
-        // Кнопка ресета
+        // Кнопка reset
         $("#filter-reset").unbind()
         $("#filter-reset").on("click tap", () => {
             filterClients.filter = "date"
@@ -56,7 +56,7 @@ function renderFilter(filterName) {
         })
         
     } else { // Фильтры архива
-        // Если выбран фильтр даты, то ставим выбраным дату
+        // Если выбран фильтр даты, то ставим выбранную дату
         if (filterArchive.filter === "date") {
             $("#filter-date").prop("checked", true)
             $("#filter-name").prop("checked", false)
@@ -82,7 +82,7 @@ function renderFilter(filterName) {
             renderClients(clients)
         })
 
-        // Кнопка ресета
+        // Кнопка reset
         $("#filter-reset").unbind()
         $("#filter-reset").on("click tap", () => {
             filterArchive.filter = "date"

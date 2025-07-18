@@ -26,7 +26,7 @@
 
 
 /* Обвертка модального окна */
-#filter-wrapper, #managers-filter-wrapper, #managers-block-wrapper, #managers-access-wrapper {
+#filter-wrapper {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -40,18 +40,13 @@
     z-index: 5; /* Выше навигации */
 }
 
-.filter, .managers-search, .managers-block {
+.filter {
     width: 342px;
     /* height: 340px; */
 
     background: #FFFFFF;
     border-radius: 10px;
 }
-
-.managers-block {
-    width: 350px;
-}
-
 
 .filter-title {
     padding: 24px 30px 0 30px;
@@ -178,28 +173,38 @@ input[type="radio"]:checked::after {
 }
 
 
-/* Блокировка менеджера */
-.managers-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 29px;
 
-    box-sizing: border-box;
-    padding: 60px 30px;
+/* Бургер навигации */
+#nav-burger {
+    display: none;
 }
 
-#managers-block-text, #managers-access-text {
+
+/* Открытие всех результатов */
+#open-all-results {
+    cursor: pointer;
+    opacity: .75;
+    transition: .15s all;
+
+    margin-left: 8px;
+}
+
+@media (hover: hover) {
+    #open-all-results:hover {
+        opacity: 1;
+    }
+}
+
+@media (hover: none) {
+    #open-all-results {
+        opacity: 1;
+    }
+}
+
+
+/* Фильтр по менеджерам */
+#manager-list {
     width: 100%;
-}
-
-.managers-block__buttons {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.managers-block__buttons button {
-    width: 125px;
     height: 36px;
+    border-radius: 5px;
 }

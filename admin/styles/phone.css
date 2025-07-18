@@ -130,10 +130,6 @@
         width: 100%;
     }
 
-    .form-title p {
-        width: 80%;
-    }
-
 
     /* Только заголовок */
     #container-profile .form-title,
@@ -392,7 +388,7 @@
         margin-left: 14px;
     }
 
-    .filter, .managers-search {
+    .filter {
         width: 220px;
     }
 
@@ -450,97 +446,9 @@
         height: 30px;
     }
 
-
-    /* Блокировка менеджера */
-    .managers-block {
-        width: 230px;
-        gap: 12px;
-        padding: 24px;
-    }
-
-    .managers-block__buttons button {
-        width: 70px;
-        height: 28px;
-    }
-
-
     /* Блокировка скрола в навигации */
     .no-scroll {
         overflow: hidden;
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    #container-managers .content {
-        height: 320px;
-        padding: 0;
-    }
-
-    .manager-container {
-        width: 100%;
-        display: flex;
-        gap: 12px;
-        box-sizing: border-box;
-        padding: 20px 30px;
-        margin: 0;
-
-        border: none;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .manager-container:nth-child(2n) {
-        border: none;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .manager-container .p1-strong {
-        font-size: 16px;
-    }
-
-    .new-manager {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 20px 30px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .new-manager .p1-strong {
-        font-size: 16px;
-    }
-
-
-    #search-manager {
-        padding: 0;
-
-        right: 12px;
-        top: 18px;
-    }
-
-    #managers-filter-name {
-        height: 30px;
-        padding: 0 8px;
-        border-radius: 5px;
-    }
-
-    #managers-filter-submit {
-        height: 30px;
-        border-radius: 5px;
-        font-size: 12px;
-    }
-
-
-    #manager-copied {
-        font-size: 12px;
-    }
-
-    /* Открытие и закрытие полного доступа */
-    .full-access-manager {
-        top: 0px;
-        left: 95px;
     }
 }
 

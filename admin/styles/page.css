@@ -40,14 +40,12 @@
 }
 
 .form-title p {
-    width: 470px;
     text-align: center;
 }
 
 /* Центрированный текст внутри заголовков во вкладке "Мой профиль"  */
 #container-profile .form-title,
-#container-open-card .form-title,
-#container-managers .form-title {
+#container-open-card .form-title {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +56,8 @@
 /* В других вкладках поле поиска  */
 #container-clients .form-title,
 #container-diagnostics .form-title,
-#container-archive .form-title {
+#container-archive .form-title,
+#container-managers .form-title {
     display: flex;
     align-items: center;
 
